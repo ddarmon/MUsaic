@@ -1,4 +1,3 @@
-library(mosaic)
 library(MUsaic)
 
 load('ex02-34.rda')

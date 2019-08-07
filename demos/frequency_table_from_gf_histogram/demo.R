@@ -1,4 +1,3 @@
-library(mosaic)
 library(MUsaic)
 
 load('ta01-02.rda')

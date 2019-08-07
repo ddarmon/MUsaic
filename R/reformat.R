@@ -25,7 +25,7 @@ frequency_table_from_gf_histogram = function(object, plot = TRUE){
   colnames(table) = c('left_cut', 'right_cut', 'frequency')
 
   if(plot){
-    object
+    print(object)
   }
 
   return(table)
