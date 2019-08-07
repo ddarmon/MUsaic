@@ -17,3 +17,12 @@ columns_to_factors = function(data){
 
   return(data.new)
 }
+
+#' @export
+frequency_table_from_gf_histogram(object){
+  table = ggplot_build(object)$data[[1]][, c(4:5, 2)]
+
+  colnames(table) = c('left_cut', 'right_cut', 'frequency')
+
+  return(table)
+}
