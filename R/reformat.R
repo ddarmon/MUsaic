@@ -19,10 +19,14 @@ columns_to_factors = function(data){
 }
 
 #' @export
-frequency_table_from_gf_histogram = function(object){
+frequency_table_from_gf_histogram = function(object, plot = TRUE){
   table = ggplot_build(object)$data[[1]][, c(4:5, 2)]
 
   colnames(table) = c('left_cut', 'right_cut', 'frequency')
+
+  if(plot){
+    object
+  }
 
   return(table)
 }
