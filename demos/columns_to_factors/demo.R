@@ -26,3 +26,6 @@ ggsave('density_plot.pdf')
 
 gf_violin(response ~ label, data = df.clean)
 ggsave('violin_plot.pdf')
+
+aov.res = aov(response ~ label, data = df.clean)
+summary(aov.res)
