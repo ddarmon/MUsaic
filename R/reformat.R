@@ -20,9 +20,22 @@ columns_to_factors = function(data){
 
 #' @export
 frequency_table_from_gf_histogram = function(object, plot = TRUE){
-  table = ggplot_build(object)$data[[1]][, c(4:5, 2)]
+  lc = ggplot_build(object)$data[[1]][, 4] # The left cutpoints
+  rc = ggplot_build(object)$data[[1]][, 5] # The right cutpoints
+  f  = ggplot_build(object)$data[[1]][, 2] # The frequencies
 
-  colnames(table) = c('left_cut', 'right_cut', 'frequency')
+  bins = c()
+
+  for (bin.ind in 1:length(lc)){
+    if (bin.ind == 1){ # gf_histogram uses [a, b] for the first bin
+      bin.text = sprintf('[%g, %g]', lc[bin.ind], rc[bin.ind])
+    }else{ # gf_histogram uses (a, b] for all non-first bins
+      bin.text = sprintf('(%g, %g]', lc[bin.ind], rc[bin.ind])
+    }
+    bins = c(bins, bin.text)
+  }
+
+  table = data.frame('left_boundary' = lc, 'right_boundary' = rc, 'bin' = bins, 'frequency' = f)
 
   if(plot){
     print(object)
