@@ -43,3 +43,22 @@ frequency_table_from_gf_histogram = function(object, plot = TRUE){
 
   return(table)
 }
+
+#' @export
+string2matrix = function(s){
+  rows = strsplit(s, ';')[[1]]
+  
+  A = c()
+  
+  for (row in rows){
+    entries = strsplit(trimws(row), ' ')[[1]]
+    
+    A = c(A, entries)
+  }
+  
+  An = as.numeric(A)
+  
+  mat = matrix(An, nrow = length(rows), ncol = length(entries), byrow = TRUE)
+  
+  return(mat)
+}
