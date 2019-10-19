@@ -15,7 +15,7 @@ two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
                               alternative = c("two.sided", "less", "greater"),
                               conf.level = 0.95){
 
-  if (length(alternative == 3)){
+  if (length(alternative) == 3){
     alternative = "two.sided"
   }
   
@@ -86,7 +86,7 @@ two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
 one.sample.t.test = function(xbar, s, n, mu0 = 0,
                         alternative = c("two.sided", "less", "greater"),
                         conf.level = 0.95){
-  if (length(alternative == 3)){
+  if (length(alternative) == 3){
     alternative = "two.sided"
   }
   
