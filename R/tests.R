@@ -1,8 +1,24 @@
-#' @export
+#' Welch's two-sample t-test with summary statistics
+#'
+#' Welch's two-sample t-test for testing claims about the different between two population means without assuming the population variances are equal.
+#'
+#' @param xbar the sample mean of the first sample.
+#' @param ybar the sample mean of the second sample.
+#' @param sx the sample standard deviation of the first sample.
+#' @param sy the sample standard deviation of the second sample.
+#' @param nx the sample size of the first sample.
+#' @param ny the sample size of the second sample.
+#' @param null.diff the assumed difference mu_X - mu_Y under the null hypothesis.
+#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
+#' @param conf.level confidence level for the interval estimator
 two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
                               alternative = c("two.sided", "less", "greater"),
                               conf.level = 0.95){
 
+  if (length(alternative == 3)){
+    alternative = "two.sided"
+  }
+  
   alpha = 1 - conf.level
 
   xbar.se = sx/sqrt(nx); ybar.se = sy/sqrt(ny)
@@ -57,11 +73,23 @@ two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
 
 }
 
-#' @export
+#' Gosset's one-sample t-test with summary statistics
+#'
+#' Gosset's one-sample t-test for testing claims about a population mean.
+#'
+#' @param xbar the sample mean.
+#' @param s the sample standard deviation.
+#' @param n the sample size.
+#' @param mu0 the assumed population mean under the null hypothesis.
+#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
+#' @param conf.level confidence level for the interval estimator
 one.sample.t.test = function(xbar, s, n, mu0 = 0,
                         alternative = c("two.sided", "less", "greater"),
                         conf.level = 0.95){
-
+  if (length(alternative == 3)){
+    alternative = "two.sided"
+  }
+  
   alpha = 1 - conf.level
 
   nu = n - 1
