@@ -1,16 +1,27 @@
-#' @export
-columns_to_factors = function(data){
+#' Convert columns to factors.
+#' 
+#' Function to convert a data frame with two or more columns of numerical values, where each column corresponds to a specific factor level, into two columns, where the first column contains all of the numerical values and the second column contains their corresponding factor level.
+#'
+#' @param data the data frame containing the (two or more) numerical columns.
+#' @param col.names.use a vector containing the desired column names as strings.
+columns_to_factors = function(data, col.names.use = NULL){
   col.names = colnames(data)
+  
+  if (is.null(col.names.use)){
+    col.names.use = col.names
+  }
 
   response = c()
   label    = c()
 
-  for (col.name in col.names){
+  for (col.ind in 1:ncol(data)){
+    col.name = col.names[col.ind]
+    
     a = data[[col.name]]
     a = a[!is.na(a)]
 
     response = c(response, a)
-    label = c(label, rep(col.name, length(a)))
+    label = c(label, rep(col.names.use[col.ind], length(a)))
   }
 
   data.new = data.frame(response = response, label = factor(label))
@@ -18,7 +29,13 @@ columns_to_factors = function(data){
   return(data.new)
 }
 
-#' @export
+#' Generate a frequency table from a ggformula histogram object.
+#' 
+#' Function to create a frequency table from a ggformula histogram object. Returns the cut points, bins, and counts within each bin.
+#' 
+#' @param object An output from gf_histogram.
+#'
+#' @param plot Logical indicating whether (TRUE) or not (FALSE) to plot the histogram passed to frequency_table_from_gf_histogram.
 frequency_table_from_gf_histogram = function(object, plot = TRUE){
   lc = ggplot_build(object)$data[[1]][, 4] # The left cutpoints
   rc = ggplot_build(object)$data[[1]][, 5] # The right cutpoints
