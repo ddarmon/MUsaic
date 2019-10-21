@@ -7,7 +7,7 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
     xpred = seq(xrange[1], xrange[2], length.out = 200)
     sspred = predict(ss.out, x = xpred)
     
-    return(gf_point(y ~ x) %>% gf_line(sspred$y ~ sspred$x, col = 'red', lwd = 2) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname)) 
+    return(gf_point(y ~ x) %>% gf_line(sspred$y ~ sspred$x, col = 'red', lwd = 1) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname)) 
   }else{
     return(gf_point(y ~ x) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname))
   }
