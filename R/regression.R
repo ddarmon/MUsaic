@@ -13,7 +13,7 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
   }
 }
 
-plot_residuals_versus_predictors = function(object, squared = FALSE){
+gf_residuals_versus_predictors = function(object, squared = FALSE){
   predictor.names = names(object$coefficients)
   
   rs = object$residuals
