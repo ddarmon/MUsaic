@@ -13,6 +13,18 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
   }
 }
 
+plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
+    gam.out = mgcv::gam(y ~ s(x))
+    
+    xrange = range(x)
+    
+    xpred = seq(xrange[1], xrange[2], length.out = 200)
+    
+    gampred = predict(gam.out, newdata = data.frame(x = xpred))
+    
+    return(gf_point(y ~ x) %>% gf_line(gampred ~ xpred, col = 'red', lwd = 1) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname)) 
+}
+
 gf_residuals_versus_predictors = function(object, squared = FALSE){
   predictor.names = names(object$coefficients)
   
@@ -30,11 +42,11 @@ gf_residuals_versus_predictors = function(object, squared = FALSE){
     rs = rs^2
   }
   
-  print(plot_points_with_smoothing_spline(object$fitted.values, rs, xname = 'Fitted Values', yname = rs.text, yline = yline), newpage = TRUE)
+  print(plot_points_with_gam(object$fitted.values, rs, xname = 'Fitted Values', yname = rs.text, yline = yline), newpage = TRUE)
   
   for (predictor.name in predictor.names){
     if (predictor.name != "(Intercept)"){
-      print(plot_points_with_smoothing_spline(object$model[[predictor.name]], rs, xname = predictor.name, yname = rs.text, yline = yline), newpage = TRUE)
+      print(plot_points_with_gam(object$model[[predictor.name]], rs, xname = predictor.name, yname = rs.text, yline = yline), newpage = TRUE)
     }
   }
 }
