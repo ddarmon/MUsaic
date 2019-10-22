@@ -14,6 +14,7 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
 }
 
 plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
+  if (length(unique(x)) >= 4){
     gam.out = mgcv::gam(y ~ s(x))
     
     xrange = range(x)
@@ -23,6 +24,9 @@ plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
     gampred = predict(gam.out, newdata = data.frame(x = xpred))
     
     return(gf_point(y ~ x) %>% gf_line(gampred ~ xpred, col = 'red', lwd = 1) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname)) 
+  }else{
+    return(gf_point(y ~ x) %>% gf_hline(yintercept = ~ yline, lty = 2) %>% gf_labs(x = xname, y = yname))
+  }
 }
 
 gf_residuals_versus_predictors = function(object, squared = FALSE){
