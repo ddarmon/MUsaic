@@ -14,7 +14,7 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
 }
 
 plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
-  if (length(unique(x)) >= 4){
+  if (length(unique(x)) >= 5){
     gam.out = mgcv::gam(y ~ s(x))
     
     xrange = range(x)
