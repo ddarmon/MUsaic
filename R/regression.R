@@ -30,7 +30,18 @@ plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
 }
 
 gf_residuals_versus_predictors = function(object, squared = FALSE){
-  predictor.names = names(object$coefficients)
+  X = model.matrix(object)
+  predictor.names = colnames(X)
+  
+  if (predictor.names[1] == '(Intercept)'){
+    p = ncol(X) - 1
+    predictor.names = predictor.names[2:(p+1)]
+    intercept.offset = 1
+  }else{
+    p = ncol(X)
+    
+    intercept.offset = 0
+  }
   
   rs = object$residuals
   
@@ -48,9 +59,10 @@ gf_residuals_versus_predictors = function(object, squared = FALSE){
   
   print(plot_points_with_gam(object$fitted.values, rs, xname = 'Fitted Values', yname = rs.text, yline = yline), newpage = TRUE)
   
-  for (predictor.name in predictor.names){
-    if (predictor.name != "(Intercept)"){
-      print(plot_points_with_gam(object$model[[predictor.name]], rs, xname = predictor.name, yname = rs.text, yline = yline), newpage = TRUE)
+  if (p > 0){
+    for (j in 1:p){
+      predictor.name = predictor.names[j]
+        print(plot_points_with_gam(X[, intercept.offset+j], rs, xname = predictor.name, yname = rs.text, yline = yline), newpage = TRUE)
     }
   }
 }
