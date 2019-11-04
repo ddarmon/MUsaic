@@ -4,12 +4,17 @@
 \alias{columns_to_factors}
 \title{Convert columns to factors.}
 \usage{
-columns_to_factors(data, col.names.use = NULL)
+columns_to_factors(data, response.name = NULL, factor.name = NULL,
+  level.names = NULL)
 }
 \arguments{
 \item{data}{the data frame containing the (two or more) numerical columns.}
 
-\item{col.names.use}{a vector containing the desired column names as strings.}
+\item{response.name}{the name for the response column in the new data frame}
+
+\item{factor.name}{the name for the factor (categorical variable) column in the new data frame}
+
+\item{level.names}{a vector containing the desired names for the factor levels.}
 }
 \description{
 Function to convert a data frame with two or more columns of numerical values, where each column corresponds to a specific factor level, into two columns, where the first column contains all of the numerical values and the second column contains their corresponding factor level.
