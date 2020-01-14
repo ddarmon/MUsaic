@@ -47,9 +47,11 @@ columns_to_factors = function(data, response.name = NULL, factor.name = NULL, le
 #'
 #' @param plot Logical indicating whether (TRUE) or not (FALSE) to plot the histogram passed to frequency_table_from_gf_histogram.
 frequency_table_from_gf_histogram = function(object, plot = TRUE){
-  lc = ggplot_build(object)$data[[1]][, 4] # The left cutpoints
-  rc = ggplot_build(object)$data[[1]][, 5] # The right cutpoints
-  f  = ggplot_build(object)$data[[1]][, 2] # The frequencies
+  tmp = ggplot_build(object)$data[[1]]
+
+  lc = tmp$xmin # The left cutpoints
+  rc = tmp$xmax # The right cutpoints
+  f  = tmp$count # The frequencies
 
   bins = c()
 
@@ -70,7 +72,6 @@ frequency_table_from_gf_histogram = function(object, plot = TRUE){
 
   return(table)
 }
-
 #' @export
 string2matrix = function(s){
   rows = strsplit(s, ';')[[1]]
