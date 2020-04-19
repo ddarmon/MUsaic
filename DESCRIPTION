@@ -7,7 +7,7 @@ Maintainer: David Darmon <ddarmon@monmouth.edu>
 Description: This package contains functionality beyond the mosaic functionality,
     Especially for handling the data sets included with Baldi & Moore (4th Edition).
 Depends:
-    mosaic (>= 1.5.0), MultinomialCI (>= 1.1)
+    mosaic (>= 1.5.0), MultinomialCI (>= 1.1), cubature (>= 2.0.4)
 License: GNU
 Encoding: UTF-8
 LazyData: true
