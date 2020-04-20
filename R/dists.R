@@ -32,3 +32,19 @@ pcorr <- function(q, rho, n, lower.tail = TRUE){
 }
 
 pcorr <- Vectorize(pcorr, vectorize.args = c('q', 'rho'))
+
+dcorr.fisher <- function(x, rho, n){
+  ps <- atanh(x)
+  psi <- atanh(rho)
+  s <- 1/sqrt(n-3)
+  
+  dnorm((ps - psi)/s)*(1/(s*(1-x^2)))
+}
+
+pcorr.fisher <- function(q, rho, n, lower.tail = TRUE){
+  x <- atanh(q)
+  psi <- atanh(rho)
+  
+  pnorm(x, mean = psi, sd = sqrt(1/(n-3)), lower.tail = lower.tail)
+}
+
