@@ -10,7 +10,7 @@ dcorr <- function(x, rho, n){
   }
   
   definite.integral <- function(r, rho, n){
-    cubintegrate(integrand, lower = 0, upper = Inf, nVec = 1, relTol = 1e-30, method = "pcubature", r = r, rho = rho, n = n)$integral
+    cubintegrate(integrand, lower = 0, upper = Inf, nVec = 1, relTol = 1e-5, method = "pcubature", r = r, rho = rho, n = n)$integral
     # integrate(integrand, lower = 0, upper = Inf, r = r, rho = rho, n = n, rel.tol = 1e-20)$value
   }
   definite.integral <- Vectorize(definite.integral, vectorize.args = 'r')
@@ -24,9 +24,9 @@ dcorr <- function(x, rho, n){
 
 pcorr <- function(q, rho, n, lower.tail = TRUE){
   if (lower.tail){
-    cubintegrate(dcorr, lower = -1, upper = q, method = "pcubature", nVec = 1, relTol = 1e-30, rho = rho, n = n)$integral
+    cubintegrate(dcorr, lower = -1, upper = q, method = "pcubature", nVec = 1, relTol = 1e-5, rho = rho, n = n)$integral
   }else{
-    cubintegrate(dcorr, lower = q, upper = 1, method = "pcubature", nVec = 1, relTol = 1e-30, rho = rho, n = n)$integral
+    cubintegrate(dcorr, lower = q, upper = 1, method = "pcubature", nVec = 1, relTol = 1e-5, rho = rho, n = n)$integral
   }
   # integrate(dcorr, lower = -1, upper = q, rho = rho, n = n, rel.tol = 1e-7)$value
 }
