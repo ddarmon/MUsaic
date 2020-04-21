@@ -23,10 +23,13 @@ dcorr <- function(x, rho, n){
 }
 
 pcorr <- function(q, rho, n, lower.tail = TRUE){
+  
+  relTol <- 1e-5
+
   if (lower.tail){
-    cubintegrate(dcorr, lower = -1, upper = q, method = "pcubature", nVec = 1, relTol = 1e-5, rho = rho, n = n)$integral
+    cubintegrate(dcorr, lower = -1, upper = q, method = "pcubature", nVec = 1, relTol = relTol, rho = rho, n = n)$integral
   }else{
-    cubintegrate(dcorr, lower = q, upper = 1, method = "pcubature", nVec = 1, relTol = 1e-5, rho = rho, n = n)$integral
+    cubintegrate(dcorr, lower = q, upper = 1, method = "pcubature", nVec = 1, relTol = relTol, rho = rho, n = n)$integral
   }
   # integrate(dcorr, lower = -1, upper = q, rho = rho, n = n, rel.tol = 1e-7)$value
 }

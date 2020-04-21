@@ -135,3 +135,71 @@ one.sample.t.test = function(xbar, s, n, mu0 = 0,
   return(wtt)
 
 }
+
+exact.cor.test = function(x, y, rho0 = 0,
+                             alternative = c("two.sided", "less", "greater"),
+                             conf.level = 0.95){
+  if (length(alternative) == 3){
+    alternative = "two.sided"
+  }
+  
+  n <- length(x)
+  
+  stopifnot(length(x) == length(y))
+  
+  alpha = 1 - conf.level
+  
+  r <- cor(x, y)
+  
+  # Fudge factor here:
+  # lower.eval <- -1+1e-3
+  # upper.eval <- 1-1e-3
+  
+  approx.int <- cor.test(x, y, conf.level = conf.level, alternative = alternative)$conf.int
+  
+  if (alternative == 'two.sided'){
+    p.value = 2*min(pcorr(-abs(r), rho0, n), pcorr(abs(r), rho0, n, lower.tail = FALSE))
+    
+    # lb <- uniroot(function(rho) pcorr(r, rho, n, lower.tail = FALSE) - alpha/2, interval = c(lower.eval, upper.eval))$root
+    # ub <- uniroot(function(rho) pcorr(r, rho, n) - alpha/2, interval = c(lower.eval, upper.eval))$root
+    
+    lb <- newtonRaphson(function(rho) pcorr(r, rho, n, lower.tail = FALSE) - alpha/2, x0 = approx.int[1])$root
+    ub <- newtonRaphson(function(rho) pcorr(r, rho, n) - alpha/2, x0 = approx.int[2])$root
+    
+    conf.int = c(lb, ub)
+    
+    alt.text = sprintf("true correlation is not equal to %g", rho0)
+  }else if (alternative == 'less'){
+    p.value = pcorr(r, rho0, n)
+    
+    # ub <- uniroot(function(rho) pcorr(r, rho, n) - alpha, interval = c(lower.eval, upper.eval))$root
+    ub <- newtonRaphson(function(rho) pcorr(r, rho, n) - alpha, x0 = approx.int[2])$root
+    
+    conf.int = c(-1,ub)
+    
+    alt.text = sprintf("true correlation is less than %g", rho0)
+  }else if (alternative == 'greater'){
+    p.value = pcorr(r, rho0, n, lower.tail = FALSE)
+    
+    # lb <- uniroot(function(rho) pcorr(r, rho, n, lower.tail = FALSE) - alpha, interval = c(lower.eval, upper.eval))$root
+    lb <- newtonRaphson(function(rho) pcorr(r, rho, n, lower.tail = FALSE) - alpha, x0 = approx.int[1])$root
+    
+    conf.int = c(lb,1)
+    
+    alt.text = sprintf("true correlation is greater than %g", rho0)
+  }
+  
+  attr(conf.int, which = "conf.level") = conf.level
+  
+  names(r) <- "r"
+  wtt <- list(method = "Exact bivariate Gaussian correlation test",
+              data.name = paste(deparse(substitute(x)), "and", deparse(substitute(y))),
+              statistic = r,
+              p.value = p.value,
+              conf.int = conf.int,
+              estimate = r,
+              alternative = alt.text)
+  class(wtt) <- "htest"
+  return(wtt)
+  
+}
