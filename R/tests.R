@@ -158,7 +158,7 @@ exact.cor.test = function(x, y, rho0 = 0,
   approx.int <- cor.test(x, y, conf.level = conf.level, alternative = alternative)$conf.int
   
   if (alternative == 'two.sided'){
-    p.value = 2*min(pcorr(-abs(r), rho0, n), pcorr(abs(r), rho0, n, lower.tail = FALSE))
+    p.value = 2*min(pcorr(r, rho0, n), pcorr(r, rho0, n, lower.tail = FALSE))
     
     # lb <- uniroot(function(rho) pcorr(r, rho, n, lower.tail = FALSE) - alpha/2, interval = c(lower.eval, upper.eval))$root
     # ub <- uniroot(function(rho) pcorr(r, rho, n) - alpha/2, interval = c(lower.eval, upper.eval))$root
