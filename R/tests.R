@@ -201,5 +201,4 @@ cor.test.exact = function(x, y, rho0 = 0,
               alternative = alt.text)
   class(wtt) <- "htest"
   return(wtt)
-  
 }
