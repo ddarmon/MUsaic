@@ -136,7 +136,7 @@ one.sample.t.test = function(xbar, s, n, mu0 = 0,
 
 }
 
-exact.cor.test = function(x, y, rho0 = 0,
+cor.test.exact = function(x, y, rho0 = 0,
                              alternative = c("two.sided", "less", "greater"),
                              conf.level = 0.95){
   if (length(alternative) == 3){
