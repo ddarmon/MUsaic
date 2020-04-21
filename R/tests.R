@@ -198,8 +198,15 @@ cor.test.exact = function(x, y, rho0 = 0,
 
   attr(conf.int, which = "conf.level") = conf.level
 
+  if (exact == TRUE){
+    method.name <- "Exact bivariate Gaussian correlation test"
+  }else{
+    method.name <- "Fisher's z-transform bivariate Gaussian correlation test"
+  }
+
+
   names(r) <- "r"
-  wtt <- list(method = "Exact bivariate Gaussian correlation test",
+  wtt <- list(method = method.name,
               data.name = paste(deparse(substitute(x)), "and", deparse(substitute(y))),
               statistic = r,
               p.value = p.value,
