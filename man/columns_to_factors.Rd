@@ -4,8 +4,12 @@
 \alias{columns_to_factors}
 \title{Convert columns to factors.}
 \usage{
-columns_to_factors(data, response.name = NULL, factor.name = NULL,
-  level.names = NULL)
+columns_to_factors(
+  data,
+  response.name = NULL,
+  factor.name = NULL,
+  level.names = NULL
+)
 }
 \arguments{
 \item{data}{the data frame containing the (two or more) numerical columns.}

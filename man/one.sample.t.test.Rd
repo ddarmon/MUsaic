@@ -4,8 +4,14 @@
 \alias{one.sample.t.test}
 \title{Gosset's one-sample t-test with summary statistics}
 \usage{
-one.sample.t.test(xbar, s, n, mu0 = 0, alternative = c("two.sided",
-  "less", "greater"), conf.level = 0.95)
+one.sample.t.test(
+  xbar,
+  s,
+  n,
+  mu0 = 0,
+  alternative = c("two.sided", "less", "greater"),
+  conf.level = 0.95
+)
 }
 \arguments{
 \item{xbar}{the sample mean.}

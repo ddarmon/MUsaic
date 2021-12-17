@@ -4,8 +4,17 @@
 \alias{two.sample.t.test}
 \title{Welch's two-sample t-test with summary statistics}
 \usage{
-two.sample.t.test(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
-  alternative = c("two.sided", "less", "greater"), conf.level = 0.95)
+two.sample.t.test(
+  xbar,
+  ybar,
+  sx,
+  sy,
+  nx,
+  ny,
+  null.diff = 0,
+  alternative = c("two.sided", "less", "greater"),
+  conf.level = 0.95
+)
 }
 \arguments{
 \item{xbar}{the sample mean of the first sample.}

@@ -12,7 +12,7 @@ convert.decimal.fraction.to.binary(d, e, ndigits = 54)
 
 \item{e}{the exponent for 10^(-e)}
 
-\item{ndigits}{the number of digits to return}
+\item{ndigits}{the maximum number of digits to search for the repeating pattern}
 }
 \description{
 A function to convert a decimal fraction into a binary
@@ -25,4 +25,24 @@ See
 http://cs.furman.edu/digitaldomain/more/ch6/dec_frac_to_bin.htm
 
 for more details.
+
+This function returns the
+
+**NOTE:** Both d and e should be **integer type**, i.e.
+suffixed with an `L`.
+
+If not, they will be coerced to integer type if possible.
+}
+\examples{
+# Binary expansion of 1/10 = 1/10^1
+
+convert.decimal.fraction.to.binary(1, 1)
+
+# Binary expansion of 1/2 = 5/10^1
+
+convert.decimal.fraction.to.binary(5, 1)
+
+# Binary expansion of 1/100 = 1/10^2
+
+convert.decimal.fraction.to.binary(1, 2)
 }
