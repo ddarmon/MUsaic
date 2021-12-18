@@ -94,7 +94,7 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
   # Collector for the final string-version of the binary
   # expansion.
 
-  string <- ''
+  binary.representation <- ''
 
   expansion <- rep(0, ndigits)
   for (i in 1:ndigits) {
@@ -118,14 +118,14 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
       expansion <- expansion[1:i]
 
       if (where.seen == 1){ # The repeating part starts immediately after the decimal
-        string <- paste0("0.(",
+        binary.representation <- paste0("0.(",
                          paste0(expansion[where.seen:i], collapse = ''),
                          ")", collapse = '')
 
         initial.part <- c()
         repeating.part <- expansion[where.seen:i]
       }else{ # There are non-repeating parts before the decimal
-        string <- paste0("0.",
+        binary.representation <- paste0("0.",
                          paste0(expansion[1:(where.seen-1)], collapse = ''),
                          "(",
                          paste0(expansion[where.seen:i], collapse = ''),
@@ -142,7 +142,7 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
 
     if (identical(a, 0L)) { # Check if the binary expansion has terminated.
       expansion <- expansion[1:i]
-      string <- paste0("0.", expansion, collapse = '')
+      binary.representation <- paste0("0.", expansion, collapse = '')
 
       initial.part <- expansion[1:i]
       repeating.part <- c()
@@ -151,9 +151,9 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
     }
   }
 
-  if (string == ''){ # If the binary expansion hasn't repeated / terminated, indicate that
+  if (binary.representation == ''){ # If the binary expansion hasn't repeated / terminated, indicate that
                      # the binary expansion hasn't been found by terminal '(...)'
-    string <- paste0("0.",
+    binary.representation <- paste0("0.",
                      paste0(expansion, collapse = ''),
                      '(...)',
                      collapse = '')
@@ -161,6 +161,14 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
     initial.part <- expansion
     repeating.part <- c()
   }
+  
+  # Get out decimal representation
+  
+  num.leading.zeros <- e - ceiling(log10(d))
+  
+  decimal.representation <- paste0('0.',
+         paste0(rep(0, num.leading.zeros), collapse = ''),
+         d)
 
-  return(list(expansion = expansion, string = string, initial.part = initial.part, repeating.part = repeating.part, terms = as))
+  return(list(decimal.representation = decimal.representation, binary.representation = binary.representation, expansion = expansion, initial.part = initial.part, repeating.part = repeating.part, terms = as))
 }
