@@ -163,8 +163,14 @@ convert.decimal.fraction.to.binary <- function(d, e, ndigits = 54){
   }
   
   # Get out decimal representation
+  # 
+  # NOTE: 
+  # 
+  #   d x 10^(-e) where d in 0, 1, 2, ..., 10^{e} - 1
+  # 
+  # log10(d) - e
   
-  num.leading.zeros <- e - ceiling(log10(d))
+  num.leading.zeros <- ceiling(e - log10(d)) - 1
   
   decimal.representation <- paste0('0.',
          paste0(rep(0, num.leading.zeros), collapse = ''),
