@@ -1,3 +1,4 @@
+#' @export
 plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residuals', yline){
   if (length(unique(x)) >= 4){
     ss.out = smooth.spline(x, y, cv = TRUE)
@@ -13,6 +14,7 @@ plot_points_with_smoothing_spline = function(x, y, xname = 'x', yname = 'Residua
   }
 }
 
+#' @export
 plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
     tryCatch(
       expr = {
@@ -31,6 +33,7 @@ plot_points_with_gam = function(x, y, xname = 'x', yname = 'Residuals', yline){
       })
 }
 
+#' @export
 gf_residuals_versus_predictors = function(object, squared = FALSE){
   X = model.matrix(object)
   predictor.names = colnames(X)

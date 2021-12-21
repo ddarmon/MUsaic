@@ -11,6 +11,8 @@
 #' @param null.diff the assumed difference mu_X - mu_Y under the null hypothesis.
 #' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #' @param conf.level confidence level for the interval estimator
+#'
+#' @export
 two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
                               alternative = c("two.sided", "less", "greater"),
                               conf.level = 0.95){
@@ -83,6 +85,8 @@ two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
 #' @param mu0 the assumed population mean under the null hypothesis.
 #' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
 #' @param conf.level confidence level for the interval estimator
+#'
+#' @export
 one.sample.t.test = function(xbar, s, n, mu0 = 0,
                         alternative = c("two.sided", "less", "greater"),
                         conf.level = 0.95){
@@ -136,6 +140,7 @@ one.sample.t.test = function(xbar, s, n, mu0 = 0,
 
 }
 
+#' @export
 cor.test.exact = function(x, y, rho0 = 0,
                              alternative = c("two.sided", "less", "greater"),
                              conf.level = 0.95, exact = TRUE){

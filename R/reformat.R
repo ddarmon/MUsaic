@@ -6,6 +6,8 @@
 #' @param response.name the name for the response column in the new data frame
 #' @param factor.name the name for the factor (categorical variable) column in the new data frame
 #' @param level.names a vector containing the desired names for the factor levels.
+#'
+#' @export
 columns_to_factors = function(data, response.name = NULL, factor.name = NULL, level.names = NULL){
   col.names = colnames(data)
 
@@ -46,6 +48,8 @@ columns_to_factors = function(data, response.name = NULL, factor.name = NULL, le
 #' @param object An output from gf_histogram.
 #'
 #' @param plot Logical indicating whether (TRUE) or not (FALSE) to plot the histogram passed to frequency_table_from_gf_histogram.
+#'
+#' @export
 frequency_table_from_gf_histogram = function(object, plot = TRUE){
   tmp = ggplot_build(object)$data[[1]]
 
@@ -72,6 +76,7 @@ frequency_table_from_gf_histogram = function(object, plot = TRUE){
 
   return(table)
 }
+
 #' @export
 string2matrix = function(s){
   rows = strsplit(s, ';')[[1]]
