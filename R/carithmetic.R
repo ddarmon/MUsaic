@@ -384,7 +384,12 @@ convert.decimal.fraction.to.nary <- function(d, e, base, ndigits = 54){
 #' @export
 convert.rational.fraction.to.nary <- function(p, q, base, ndigits = 1000){
   # Only works for rational fractions.
+
   stopifnot(p/q < 1)
+
+  # Only works for up to decimal representation.
+
+  stopifnot(base > 0 & base <= 10)
 
   # Check that p, q, and base are integer type.
   # Otherwise convert to integer type.
