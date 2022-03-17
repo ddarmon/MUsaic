@@ -10,11 +10,13 @@
 #' @param ny the sample size of the second sample.
 #' @param null.diff the assumed difference mu_X - mu_Y under the null hypothesis.
 #' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.
+#' @param var.equal a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.
 #' @param conf.level confidence level for the interval estimator
 #'
 #' @export
 two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
                               alternative = c("two.sided", "less", "greater"),
+                              var.equal = FALSE,
                               conf.level = 0.95){
 
   if (length(alternative) == 3){
@@ -23,17 +25,27 @@ two.sample.t.test = function(xbar, ybar, sx, sy, nx, ny, null.diff = 0,
 
   alpha = 1 - conf.level
 
-  xbar.se = sx/sqrt(nx); ybar.se = sy/sqrt(ny)
+  if (var.equal){
+    xbar.se = sx/sqrt(nx); ybar.se = sy/sqrt(ny)
 
-  num = (xbar.se^2 + ybar.se^2)^2
-  denom = (xbar.se^4)/(nx - 1) + (ybar.se^4)/(ny - 1)
+    num = (xbar.se^2 + ybar.se^2)^2
+    denom = (xbar.se^4)/(nx - 1) + (ybar.se^4)/(ny - 1)
 
-  nu = num/denom
+    nu = num/denom
+
+    se.diff = sqrt(sx^2/nx + sy^2/ny)
+  }else{
+    nu = nx + ny - 2
+
+    sp = sqrt(((nx - 1)*sx^2 + (ny - 1)*sy^2)/(nx + ny - 2))
+
+    se.diff = sp*sqrt(1/nx + 1/ny)
+  }
+
 
   mean.diff = xbar - ybar
 
   num =  mean.diff - null.diff
-  se.diff = sqrt(sx^2/nx + sy^2/ny)
 
   tobs = num/se.diff
 

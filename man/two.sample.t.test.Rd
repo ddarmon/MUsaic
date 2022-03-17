@@ -13,6 +13,7 @@ two.sample.t.test(
   ny,
   null.diff = 0,
   alternative = c("two.sided", "less", "greater"),
+  var.equal = FALSE,
   conf.level = 0.95
 )
 }
@@ -32,6 +33,8 @@ two.sample.t.test(
 \item{null.diff}{the assumed difference mu_X - mu_Y under the null hypothesis.}
 
 \item{alternative}{a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less". You can specify just the initial letter.}
+
+\item{var.equal}{a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.}
 
 \item{conf.level}{confidence level for the interval estimator}
 }
