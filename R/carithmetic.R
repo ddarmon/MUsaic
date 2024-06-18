@@ -560,6 +560,7 @@ convert_rational_fraction_to_nary <- function(p, q, base, ndigits = 1000) {
 #'
 #' @param binary_string A string representing a binary number, which may include a fractional part.
 #' @return A list containing the floating-point approximation, numerator, and denominator of the rational number.
+#' @export
 binary_string_to_rational <- function(binary_string) {
   # Split the binary string into integer and fractional parts
   parts <- strsplit(binary_string, "\\.")[[1]]
