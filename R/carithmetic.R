@@ -467,3 +467,126 @@ convert.rational.fraction.to.nary <- function(p, q, base, ndigits = 1000){
               initial.part = initial.part, repeating.part = repeating.part,
               terms = bs.seen))
 }
+
+#' Convert a rational fraction into its base-n representation using Horner's method and GMP library.
+#'
+#' This function computes the representation of a rational fraction in a specified base (n-ary form),
+#' using the GNU Multiple Precision (GMP) library for arbitrary precision arithmetic. The process involves
+#' repeated division by the base, using Horner's method for efficient computation. The function detects
+#' and marks repeating sequences in the n-ary expansion.
+#' 
+#' `gmp::as.bigz()` is used to allow for arbitrarily large integers for the
+#' numerator and denominator of the rational fraction.
+#'
+#' For more theoretical background, see:
+#' http://cs.furman.edu/digitaldomain/more/ch6/dec_frac_to_bin.htm
+#'
+#' @param p A `bigz` object representing the numerator of the fraction.
+#' @param q A `bigz` object representing the denominator of the fraction.
+#' @param base The base in which to express the fraction.
+#' @param ndigits The maximum number of digits to compute before stopping or detecting a repeat.
+#'
+#' @examples
+#' library(gmp)
+#' # Convert the fraction 1/9007199254740992 to binary
+#' convert_rational_fraction_to_nary_gmp(as.bigz("1"), as.bigz("9007199254740992"), base = 2)
+#'
+#' @return A list containing:
+#' - `p`: The numerator.
+#' - `q`: The denominator.
+#' - `nary_representation`: The n-ary number as a string.
+#' - `expansion`: Numeric vector of computed digits.
+#' - `initial_part`: Non-repeating part of the expansion.
+#' - `repeating_part`: Repeating sequence of digits in the expansion.
+#' - `terms`: List of intermediary terms used in computation.
+#' @export
+convert_rational_fraction_to_nary <- function(p, q, base, ndigits = 1000) {
+  require(gmp)  # Load GMP library for big integer arithmetic
+  
+  # Ensure all inputs are of type bigz
+  p <- as.bigz(p)
+  q <- as.bigz(q)
+  base <- as.bigz(base)
+  
+  # Initialize variables for the computation
+  expansion <- numeric(ndigits)
+  bs_seen <- list()
+  nary_representation <- ""
+  b <- p
+  
+  # Compute the n-ary expansion
+  for (i in 1:ndigits) {
+    b <- base * b
+    found_index <- -1
+    
+    # Check if this term has been seen before (detecting cycles)
+    for (j in seq_along(bs_seen)) {
+      if (isTRUE(all.equal(bs_seen[[j]], b))) {
+        found_index <- j
+        break
+      }
+    }
+    
+    if (found_index > 0) {  # A repeating sequence is found
+      expansion <- expansion[1:(i - 1)]
+      if (found_index == 1) {
+        nary_representation <- sprintf("0.(%s)", paste(expansion, collapse = ""))
+      } else {
+        nary_representation <- sprintf("0.%s(%s)", 
+                                       paste(expansion[1:(found_index - 1)], collapse = ""),
+                                       paste(expansion[found_index:(i - 1)], collapse = ""))
+      }
+      break
+    } else {
+      bs_seen[[length(bs_seen) + 1]] <- b
+    }
+    
+    # Compute and record the digit
+    expansion[i] <- as.integer(as.bigz(floor(b / q)))
+    b <- b - as.bigz(expansion[i]) * q
+  }
+  
+  # Construct output for non-repeating case
+  if (nary_representation == "") {
+    nary_representation <- sprintf("0.%s(...)", paste(expansion, collapse = ""))
+  }
+  
+  return(list(p = p, q = q, nary_representation = nary_representation, expansion = expansion,
+              initial_part = expansion[1:(found_index - 1) %/% 1], repeating_part = expansion[found_index:(i - 1)],
+              terms = bs_seen))
+}
+
+#' Convert a binary string to its rational representation
+#'
+#' @param binary_string A string representing a binary number, which may include a fractional part.
+#' @return A list containing the floating-point approximation, numerator, and denominator of the rational number.
+binary_string_to_rational <- function(binary_string) {
+  # Split the binary string into integer and fractional parts
+  parts <- strsplit(binary_string, "\\.")[[1]]
+  int_part <- parts[1]
+  frac_part <- ifelse(length(parts) > 1, parts[2], "")
+  
+  # Convert integer part to decimal
+  int_decimal <- 0
+  if (nchar(int_part) > 0) {
+    int_decimal <- sum(as.numeric(strsplit(int_part, NULL)[[1]]) * 2^(rev(seq_len(nchar(int_part)) - 1)))
+  }
+  
+  # Initialize the numerator and denominator for the rational number
+  numerator <- as.bigq(int_decimal)
+  denominator <- as.bigq(1)
+  
+  # Convert fractional part to rational
+  if (nchar(frac_part) > 0) {
+    for (i in 1:nchar(frac_part)) {
+      bit <- as.numeric(substr(frac_part, i, i))
+      numerator <- numerator * as.bigq(2) + as.bigq(bit)
+      denominator <- denominator * as.bigq(2)
+    }
+  }
+  
+  # Result in decimal
+  floating_point_approximation <- as.numeric(numerator) / as.numeric(denominator)
+  
+  return(list(floating_point_approximation = floating_point_approximation, numerator = numerator, denominator = denominator))
+}
